@@ -30,8 +30,7 @@ class AuthService {
       }
     );
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    this.setCookies(data.access, data.refresh);
   }
 
   /** 새로운 계정을 생성하고 토큰을 발급받습니다. */
@@ -47,8 +46,7 @@ class AuthService {
       { email, password, name, phoneNumber, agreements }
     );
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    this.setCookies(data.access, data.refresh);
   }
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
@@ -58,8 +56,12 @@ class AuthService {
       { email, password }
     );
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    this.setCookies(data.access, data.refresh);
+  }
+
+  setCookies(accessToken: string, refreshToken: string) {
+    cookies.set("accessToken", accessToken, { expires: 1 });
+    cookies.set("refreshToken", refreshToken, { expires: 7 });
   }
 }
 
