@@ -1,7 +1,7 @@
 import axios from "axios";
 import cookies from "js-cookie";
 
-type SignupAgreements = {
+export type SignupAgreements = {
   privacy: boolean;
   ad:
     | {

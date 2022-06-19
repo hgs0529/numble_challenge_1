@@ -1,14 +1,34 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useMe } from "../src/hooks";
+import { useLogin, useMe, useRead, useSignup } from "../src/hooks";
 
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   const { data: me } = useMe();
+  const { data: userData } = useRead(14);
+  const { signup, isLoading: sginupLoading } = useSignup();
+  const { login, isLoading: loginLoding } = useLogin();
 
   console.log("내 정보입니다", me);
+  console.log("14번 유저입니다.", userData);
+
+  const handleSginup = () => {
+    if (sginupLoading) return;
+    signup({
+      email: "hgs_0529@naver.com",
+      password: "123",
+      name: "황길성",
+      phoneNumber: "010-0000-0000",
+      agreements: { privacy: true, ad: false },
+    });
+  };
+
+  const handleLogin = () => {
+    if (loginLoding) return;
+    login({ email: "hgs_0529@naver.com", password: "123" });
+  };
 
   return (
     <div className={styles.container}>
@@ -26,6 +46,12 @@ const Home: NextPage = () => {
           <code className={styles.code}>src/services</code>,
           <code className={styles.code}>src/hooks</code>
         </p>
+        <button type="button" onClick={handleSginup}>
+          회원가입
+        </button>
+        <button type="button" onClick={handleLogin}>
+          로그인
+        </button>
       </main>
 
       <footer className={styles.footer}>
