@@ -1,28 +1,19 @@
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { ILoginData, ISignupData } from "../interfaces/auth";
 import { AuthService, UserService } from "../services";
-import { SignupAgreements } from "../services/auth.service";
-
-interface ILoginData {
-  email: string;
-  password: string;
-}
-
-interface ISignupData extends ILoginData {
-  email: string;
-  password: string;
-  name: string;
-  phoneNumber: string;
-  agreements: SignupAgreements;
-}
 
 export const useMe = () => {
-  return useQuery("me", UserService.me);
+  return useQuery("me", function () {
+    return UserService.me();
+  });
 };
 
 export const useRead = (id: number) => {
   // queryKey 에 id를 넣어 유저별로 고유한 키로 캐싱
-  return useQuery(["user", id], () => UserService.read(id));
+  return useQuery(["user", id], function () {
+    return UserService.read(id);
+  });
 };
 
 export const useLogin = () => {
@@ -45,7 +36,7 @@ export const useLogin = () => {
   };
 
   const { mutate, isLoading } = useMutation((loginData: ILoginData) =>
-    AuthService.login(loginData.email, loginData.password)
+    AuthService.login(loginData)
   );
   // mutate 함수를 트리거 할수있는 함수와 isLoading을 리턴
   return { login, isLoading };
@@ -68,13 +59,7 @@ export const useSignup = () => {
   };
 
   const { mutate, isLoading } = useMutation((userData: ISignupData) =>
-    AuthService.signup(
-      userData.email,
-      userData.password,
-      userData.name,
-      userData.phoneNumber,
-      userData.agreements
-    )
+    AuthService.signup(userData)
   );
   // mutate 함수를 트리거 할수있는 함수와 isLoading을 리턴
   return { signup, isLoading };
