@@ -1,13 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useLogin, useMe, useRead, useSignup } from "../src/hooks";
+import useLogin from "../src/hooks/auth/useLogin";
+import useMe from "../src/hooks/user/useMe";
+import useSignup from "../src/hooks/auth/useSignup";
+import useUser from "../src/hooks/user/useUser";
 
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   const { data: me } = useMe();
-  const { data: userData } = useRead(14);
+  const { data: userData } = useUser(14);
   const { signup, isLoading: sginupLoading } = useSignup();
   const { login, isLoading: loginLoding } = useLogin();
 

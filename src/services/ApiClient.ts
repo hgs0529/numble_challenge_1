@@ -1,5 +1,4 @@
 import axios from "axios";
-import cookies from "js-cookie";
 
 class ApiClient {
   #instance;
@@ -11,11 +10,6 @@ class ApiClient {
 
   get apiClient() {
     return this.#instance;
-  }
-
-  setToken(accessToken: string, refreshToken: string) {
-    cookies.set("accessToken", accessToken, { expires: 1 });
-    cookies.set("refreshToken", refreshToken, { expires: 7 });
   }
 }
 

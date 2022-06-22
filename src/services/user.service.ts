@@ -1,9 +1,9 @@
-import cookies from "js-cookie";
 import ApiClient from "./ApiClient";
+import TokenProvider from "./TokenProvider";
 
 class UserService extends ApiClient {
   async me() {
-    const accessToken = cookies.get("accessToken");
+    const accessToken = TokenProvider.getToken("accessToken");
     if (!accessToken) {
       return;
     }
