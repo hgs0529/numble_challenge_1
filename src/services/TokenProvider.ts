@@ -1,6 +1,6 @@
 import cookies from "js-cookie";
 
-type TokenType = "accessToken" | "refreshToken";
+type TokenType = "accessToken" | "refreshToken" | "df" | "dfsdfsdfsfsdf";
 
 class TokenProvider {
   static getToken(tokenType: TokenType) {
@@ -13,6 +13,10 @@ class TokenProvider {
 
   static removeToken(tokenType: TokenType) {
     cookies.remove(tokenType);
+  }
+
+  static exist(tokenType: TokenType) {
+    return !!cookies.get(tokenType);
   }
 }
 

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 class ApiClient {
   #instance;
@@ -8,8 +8,20 @@ class ApiClient {
     });
   }
 
-  get apiClient() {
-    return this.#instance;
+  get(url: string, option?: AxiosRequestConfig) {
+    return this.#instance.get(url, { ...option });
+  }
+
+  post(url: string, data: any, option?: AxiosRequestConfig) {
+    return this.#instance.post(url, { ...data }, { ...option });
+  }
+
+  put(url: string, data: any, option?: AxiosRequestConfig) {
+    return this.#instance.put(url, { ...data }, { ...option });
+  }
+
+  delete(url: string, option?: AxiosRequestConfig) {
+    return this.#instance.delete(url, { ...option });
   }
 }
 

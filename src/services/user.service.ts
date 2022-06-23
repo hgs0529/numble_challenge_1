@@ -3,21 +3,19 @@ import TokenProvider from "./TokenProvider";
 
 class UserService extends ApiClient {
   async me() {
-    const accessToken = TokenProvider.getToken("accessToken");
-    if (!accessToken) {
+    if (!TokenProvider.exist("accessToken")) {
       return;
     }
-
-    const { data } = await this.apiClient.get("/users/me", {
+    const { data } = await super.get("/users/me", {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${TokenProvider.getToken("accessToken")}`,
       },
     });
     return data;
   }
 
   async read(id: number) {
-    const { data } = await this.apiClient.get(`/users/${id}`);
+    const { data } = await super.get(`/users/${id}`);
     return data;
   }
 }
