@@ -11,8 +11,8 @@ import styles from "../styles/Home.module.css";
 const Home: NextPage = () => {
   const { data: me } = useMe();
   const { data: userData } = useUser(14);
-  const { signup, isLoading: sginupLoading } = useSignup();
-  const { login, isLoading: loginLoding } = useLogin();
+  const { mutate: signup, isLoading: sginupLoading } = useSignup();
+  const { mutate: login, isLoading: loginLoding } = useLogin();
 
   console.log("내 정보입니다", me);
   console.log("14번 유저입니다.", userData);

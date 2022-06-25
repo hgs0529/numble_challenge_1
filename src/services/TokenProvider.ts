@@ -1,6 +1,6 @@
 import cookies from "js-cookie";
 
-type TokenType = "accessToken" | "refreshToken" | "df" | "dfsdfsdfsfsdf";
+type TokenType = "accessToken" | "refreshToken";
 
 class TokenProvider {
   static getToken(tokenType: TokenType) {

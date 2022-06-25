@@ -1,4 +1,4 @@
-import { ILoginData, ISignupData } from "../interfaces/auth";
+import { ILoginData, ISignupData } from "../types/auth";
 import ApiClient from "./ApiClient";
 import TokenProvider from "./TokenProvider";
 
