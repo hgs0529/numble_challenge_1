@@ -13,7 +13,7 @@ const useLogin = () => {
       alert("로그인성공");
       // 로그인 성공시 ["users","me"]라는 키로 저장되어있는 캐시를 갱신한다. 이후 로직에 따라 삭제할수있음.
       queryClient.invalidateQueries(userKeys.me());
-      // router.push("/");
+      router.push("/");
     },
     onError: (err) => {
       console.log(err);

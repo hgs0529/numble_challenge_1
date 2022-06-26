@@ -9,7 +9,7 @@ const useSignup = () => {
   return useMutation((userData: ISignupData) => AuthService.signup(userData), {
     onSuccess: () => {
       alert("회원가입에 성공하였습니다.");
-      // router.push("/login");
+      router.push("/login");
     },
     onError: (err) => {
       console.log(err);
