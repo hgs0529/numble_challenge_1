@@ -11,12 +11,13 @@ class TokenProvider {
     cookies.set(tokenType, token, { expires });
   }
 
-  static removeToken(tokenType: TokenType) {
-    cookies.remove(tokenType);
-  }
-
   static exist(tokenType: TokenType) {
     return !!cookies.get(tokenType);
+  }
+
+  static clear() {
+    cookies.remove("accessToken");
+    cookies.remove("refreshToken");
   }
 }
 

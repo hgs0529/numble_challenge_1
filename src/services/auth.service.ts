@@ -33,15 +33,13 @@ class AuthService extends ApiClient {
   // 아직 요청 url 을 모름
   async logout() {
     const { data } = await super.post("logoutUrl", null);
-    TokenProvider.removeToken("accessToken");
-    TokenProvider.removeToken("refreshToken");
+    TokenProvider.clear();
   }
 
   // 아직 요청 url 을 모름
   async signout() {
     const { data } = await super.delete("deleteUrl/14");
-    TokenProvider.removeToken("accessToken");
-    TokenProvider.removeToken("refreshToken");
+    TokenProvider.clear();
   }
 }
 

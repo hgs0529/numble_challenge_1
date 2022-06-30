@@ -1,4 +1,4 @@
-import { userKeys } from "./queryKeys";
+import { userKeys } from "../queryKeys";
 import { useQuery } from "react-query";
 import { UserService } from "../../services";
 
