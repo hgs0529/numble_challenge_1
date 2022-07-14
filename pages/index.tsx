@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Button from "../src/components/button/Button";
 
 import styles from "../styles/Home.module.css";
 
@@ -14,13 +15,12 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Hello World!</h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/auth</code>,
-          <code className={styles.code}>src/components/common</code>
-        </p>
+        <Button theme="default" to="/auth/login" type="button">
+          로그인하러가기
+        </Button>
+        <Button theme="reverse" to="/auth/signup" type="button">
+          회원가입하러가기
+        </Button>
       </main>
 
       <footer className={styles.footer}>
