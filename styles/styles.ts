@@ -13,20 +13,6 @@ export const InputWrapper = styled.div`
   }
 `;
 
-export const CheckBoxWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 1.2rem 0;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 10px 15px;
-`;
-
-export const OptionalCheckBoxWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 0 15px;
-`;
-
 export const Separate = styled.div`
   height: 1px;
   background-color: #e6e6e6;

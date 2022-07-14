@@ -10,14 +10,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../src/components/button/Button";
 import CheckBox from "../../src/components/checkBox/CheckBox";
-import {
-  CheckBoxWrapper,
-  InputWrapper,
-  OptionalCheckBoxWrapper,
-  Separate,
-  SubTitle,
-  Wrapper,
-} from "../../styles/styles";
+import { InputWrapper, Separate, SubTitle, Wrapper } from "../../styles/styles";
+import { useRouter } from "next/router";
 
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -39,6 +33,8 @@ interface IFormData {
 }
 
 export default function SignupPage() {
+  const router = useRouter();
+
   const ALL_REQUIRED_CONSENTS: TRequiredConsent[] = [
     "fourteen",
     "service",
@@ -55,6 +51,7 @@ export default function SignupPage() {
     watch,
     setValue,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm<IFormData>({ mode: "onBlur" });
 
@@ -66,12 +63,15 @@ export default function SignupPage() {
       setError("requiredConsents", { message: "약관에 동의해주세요." });
       return;
     }
+
+    alert(`${data.email} 님 가입을 환영합니다.`);
+    router.push("/");
   };
 
   const onInvalid = (errors: any) => {
     if (
-      errors.requiredConsents &&
-      errors.requiredConsents?.length !== ALL_REQUIRED_CONSENTS.length
+      !errors.requiredConsents &&
+      watch("requiredConsents").length !== ALL_REQUIRED_CONSENTS.length
     ) {
       setError("requiredConsents", { message: "약관에 동의해주세요." });
     }
@@ -81,11 +81,11 @@ export default function SignupPage() {
     setValue("requiredConsents", checked ? ALL_REQUIRED_CONSENTS : []);
     setValue("optionalConsents", checked ? ALL_OPTIONAL_CONSENTS : []);
     setValue("ads", checked ? "ads" : false);
+    clearErrors("requiredConsents");
   };
 
   const handleCheckBoxChange = () => {
     setValue("all", isAllChecked() ? "all" : false);
-
     function isAllChecked() {
       const requierdConsent = watch("requiredConsents");
       const optionalConsent = watch("optionalConsents");
@@ -129,6 +129,7 @@ export default function SignupPage() {
           <Input
             placeholder="비밀번호"
             icon={<FontAwesomeIcon icon={faLock} />}
+            type="password"
             register={register("password", {
               required: "비밀번호를 입력해주세요.",
               pattern: {
@@ -140,6 +141,7 @@ export default function SignupPage() {
           />
           <Input
             placeholder="비밀번호 확인"
+            type="password"
             icon={<FontAwesomeIcon icon={faLock} />}
             register={register("passwordCheck", {
               required: "확인을 위해 비밀번호를 다시 입력해주세요.",
@@ -187,7 +189,7 @@ export default function SignupPage() {
             errors.requiredConsents && String(errors.requiredConsents?.message)
           }
         />
-        <CheckBoxWrapper>
+        <CheckBox.Group border={true}>
           <CheckBox
             register={register("requiredConsents", {
               required: "약관에 동의해주세요.",
@@ -216,9 +218,12 @@ export default function SignupPage() {
             register={register("ads")}
             value="ads"
             label="[선택] 광고성 정보 수신동의"
-            onChange={handleOptionalCheck}
+            onChange={(isChecked: boolean) => {
+              handleOptionalCheck(isChecked);
+              handleCheckBoxChange();
+            }}
           />
-          <OptionalCheckBoxWrapper>
+          <CheckBox.Group>
             <CheckBox
               register={register("optionalConsents")}
               value="email"
@@ -246,8 +251,8 @@ export default function SignupPage() {
                 handleCheckBoxChange();
               }}
             />
-          </OptionalCheckBoxWrapper>
-        </CheckBoxWrapper>
+          </CheckBox.Group>
+        </CheckBox.Group>
         <Button theme="default" type="submit">
           동의하고 가입하기
         </Button>

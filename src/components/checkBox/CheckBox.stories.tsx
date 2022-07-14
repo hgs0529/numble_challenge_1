@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import CheckBox from "./CheckBox";
-import { useForm } from "react-hook-form";
 
 export default {
   title: "CheckBox",

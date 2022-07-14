@@ -5,6 +5,7 @@ import {
   faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Button from "../../src/components/button/Button";
 import CheckBox from "../../src/components/checkBox/CheckBox";
@@ -22,6 +23,8 @@ interface ILoginForm {
 }
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -29,7 +32,8 @@ export default function LoginPage() {
   } = useForm<ILoginForm>();
 
   const onValid = (data: ILoginForm) => {
-    console.log(data);
+    alert(`${data.email} 님 환영합니다.`);
+    router.push("/");
   };
 
   return (

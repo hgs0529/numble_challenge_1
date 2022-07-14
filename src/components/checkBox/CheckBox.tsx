@@ -11,6 +11,7 @@ import {
   CheckBoxWrapper,
   CustomCheckBox,
 } from "./styles";
+import CheckBoxGroup from "./CheckBoxGroup";
 
 interface ICheckBoxProps {
   register?: UseFormRegisterReturn;
@@ -69,3 +70,4 @@ const CheckBox = ({
 };
 
 export default CheckBox;
+CheckBox.Group = CheckBoxGroup;

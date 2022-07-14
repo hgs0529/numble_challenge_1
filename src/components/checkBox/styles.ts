@@ -53,3 +53,12 @@ export const CheckBoxText = styled.span<{ bold?: boolean }>`
   font-weight: ${(props) => (props.bold ? "bold" : "400")};
   color: rgba(0, 0, 0, 0.8);
 `;
+
+export const CheckBoxGroupWrapper = styled.div<{ border?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  margin: ${(props) => (props.border ? "1.2rem 0" : "")};
+  border: ${(props) =>
+    props.border ? "1px solid rgba(0, 0, 0, 0.1)" : "none"};
+  padding: ${(props) => (props.border ? "10px 15px" : "0 15px")};
+`;
