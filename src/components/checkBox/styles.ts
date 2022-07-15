@@ -1,21 +1,14 @@
 import styled from "@emotion/styled";
 
-export const CheckBoxComponent = styled.div`
+export const CheckBoxComponent = styled.div<{ indentLevel: number }>`
   display: flex;
-  align-items: center;
-  margin: 5px 0;
-  input {
-    display: none;
-  }
-  input:checked + label {
-    background-color: blue;
-  }
-  input:checked + label svg {
-    color: white;
-  }
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 7px 0;
+  margin-left: ${(props) => `${props.indentLevel * 1.5}rem`};
 `;
 
-export const CustomCheckBox = styled.label`
+export const CustomCheckBox = styled.div`
   border-radius: 5px;
   border: 1px solid #ccc;
   display: flex;
@@ -32,15 +25,26 @@ export const CustomCheckBox = styled.label`
   }
 `;
 
-export const CheckBoxWrapper = styled.div`
+export const CheckBoxWrapper = styled.label`
   display: flex;
   align-items: flex-start;
+
+  input {
+    display: none;
+  }
+  input:checked + .customCheckBox {
+    background-color: blue;
+  }
+  input:checked + .customCheckBox svg {
+    color: white;
+  }
 `;
 
 export const CheckBoxDescription = styled.div`
   font-size: 12px;
   color: rgba(0, 0, 0, 0.6);
   margin-top: 0.5rem;
+  margin-left: 1.5rem;
 `;
 
 export const CheckBoxContent = styled.div`

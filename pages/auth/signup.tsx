@@ -32,6 +32,63 @@ interface IFormData {
   optionalConsents: TOptionalConsent[];
 }
 
+const consentList = [
+  {
+    id: "fourteen",
+    label: "[필수] 만 14세 이상입니다.",
+    description: null,
+    parentId: null,
+  },
+  {
+    id: "service",
+    label: "[필수] 쿠팡 이용약관 동의",
+    description: null,
+    parentId: null,
+  },
+  {
+    id: "commerce",
+    label: "[필수] 전자금융거래 이용약관 동의",
+    description: null,
+    parentId: null,
+  },
+  {
+    id: "privacy",
+    label: "[필수] 개인정보 수집 및 이용 동의",
+    description: null,
+    parentId: null,
+  },
+  {
+    id: "collect",
+    label: "[선택] 광고성 목적의 개인정보 수집 및 이용 동의",
+    description: null,
+    parentId: null,
+  },
+  {
+    id: "ads",
+    label: "[선택] 광고성 정보 전송에 동의",
+    description: null,
+    parentId: "collect",
+  },
+  {
+    id: "email",
+    label: "[선택] 이메일 수신에 동의",
+    description: null,
+    parentId: "ads",
+  },
+  {
+    id: "sms",
+    label: "[선택] SMS,MMS 수신에 동의",
+    description: null,
+    parentId: "ads",
+  },
+  {
+    id: "push",
+    label: "[선택] 푸시 수신에 동의",
+    description: null,
+    parentId: "ads",
+  },
+];
+
 export default function SignupPage() {
   const router = useRouter();
 
@@ -183,13 +240,13 @@ export default function SignupPage() {
           label="모두 동의합니다."
           description="동의에는 필수 및 선택 목적(광고성 정보 수신 포함)에 대한 동의가 포함되어 있으며, 선택 목적의 동의를 거부하시는 경우에도 서비스 이용이 가능합니다."
           value="all"
-          bold={true}
+          bold
           onChange={handleAllCheck}
           errMessage={
             errors.requiredConsents && String(errors.requiredConsents?.message)
           }
         />
-        <CheckBox.Group border={true}>
+        <CheckBox.Group border>
           <CheckBox
             register={register("requiredConsents", {
               required: "약관에 동의해주세요.",
