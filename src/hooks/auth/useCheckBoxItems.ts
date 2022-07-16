@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { TAgreement } from "../../components/data/signupField";
 
 export type TCheckBoxItem = {
-  id: string;
+  id: TAgreement;
   checked: boolean;
   parentId: string | null;
 };

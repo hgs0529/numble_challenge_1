@@ -13,14 +13,14 @@ const Template: ComponentStory<typeof CheckBox> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  value: "test",
+  value: "service",
   label: "테스트용 체크박스",
 };
 
 export const Bold = Template.bind({});
 Bold.args = {
   bold: true,
-  value: "test",
+  value: "fourteen",
   label: "테스트용 체크박스",
 };
 
@@ -28,6 +28,6 @@ export const Description = Template.bind({});
 Description.args = {
   bold: true,
   description: "테스트용 설명입니다.",
-  value: "test",
+  value: "adSms",
   label: "테스트용 체크박스",
 };

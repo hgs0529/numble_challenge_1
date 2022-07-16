@@ -1,33 +1,46 @@
-import React from "react";
-import { CheckBoxGroupWrapper } from "./styles";
+import React, { useEffect } from "react";
+import useCheckBoxItems, {
+  TCheckBoxItem,
+} from "../../hooks/auth/useCheckBoxItems";
 
-export type CheckboxValueType = string | number | boolean;
-
-interface IGroupProps {
+interface ICheckBoxGroupProps {
   children: React.ReactNode;
-  border?: boolean;
+  onChange?: (list: TCheckBoxItem[]) => void;
 }
 
-interface ICheckboxGroupContext {
-  registerValue: (value: string) => void;
+interface ICheckBoxContext {
+  registerValue: (state: TCheckBoxItem) => void;
+  updateItemState: (clickedId: string) => void;
+  list: TCheckBoxItem[];
+  allChecked: boolean;
+  setAllItemState: () => void;
 }
 
-export const GroupContext =
-  React.createContext<ICheckboxGroupContext | null>(null);
+export const CheckBoxContext =
+  React.createContext<ICheckBoxContext | null>(null);
 
-const CheckBoxGroup = ({ children, border }: IGroupProps) => {
-  const [registeredValues, setRegisteredValues] = React.useState<
-    CheckboxValueType[]
-  >([]);
+const CheckBoxGroup = ({ children, onChange }: ICheckBoxGroupProps) => {
+  const { list, registerValue, updateItemState, allChecked, setAllItemState } =
+    useCheckBoxItems();
 
-  const registerValue = (value: string) => {
-    setRegisteredValues((prev) => [...prev, value]);
-  };
+  useEffect(() => {
+    if (onChange) {
+      onChange(list);
+    }
+  }, [list, onChange]);
 
   return (
-    <GroupContext.Provider value={{ registerValue }}>
-      <CheckBoxGroupWrapper border={border}>{children}</CheckBoxGroupWrapper>
-    </GroupContext.Provider>
+    <CheckBoxContext.Provider
+      value={{
+        registerValue,
+        updateItemState,
+        list,
+        allChecked,
+        setAllItemState,
+      }}
+    >
+      {children}
+    </CheckBoxContext.Provider>
   );
 };
 

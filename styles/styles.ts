@@ -24,3 +24,11 @@ export const SubTitle = styled.h3`
   font-weight: 700;
   margin: 20px 0;
 `;
+
+export const GroupWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  padding: 10px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+`;

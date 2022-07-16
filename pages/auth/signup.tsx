@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { useForm } from "react-hook-form";
 import Input from "../../src/components/input/Input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,99 +8,42 @@ import {
   faMobileScreen,
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../src/components/button/Button";
-import CheckBox from "../../src/components/checkBox/CheckBox";
-import { InputWrapper, Separate, SubTitle, Wrapper } from "../../styles/styles";
+import CheckBox from "../../src/components/checkBox";
+import {
+  GroupWrapper,
+  InputWrapper,
+  Separate,
+  SubTitle,
+  Wrapper,
+} from "../../styles/styles";
 import { useRouter } from "next/router";
+import { agreementList } from "../../src/components/data/signupField";
 
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const passwordRegex = /(?=.*\d)(?=.*[a-z]).{8,}/;
 
-type TRequiredConsent = "fourteen" | "service" | "privacy";
-type TOptionalConsent = "email" | "sms" | "marketing";
-interface IFormData {
-  email: string;
-  password: string;
-  passwordCheck: string;
-  name: string;
-  phone: string;
-  all: string | boolean;
-  ads: string | boolean;
-  requiredConsents: TRequiredConsent[];
-  optionalConsents: TOptionalConsent[];
+export interface IFormData {
+  email: string | false;
+  password: string | false;
+  passwordCheck: string | false;
+  name: string | false;
+  phone: string | false;
+  ads: string | false;
+  fourteen: string | false;
+  service: string | false;
+  commerce: string | false;
+  privacy: string | false;
+  collect: string | false;
+  adEmail: string | false;
+  adSms: string | false;
+  adPush: string | false;
+  requiredAgreement: string | false;
 }
-
-const consentList = [
-  {
-    id: "fourteen",
-    label: "[필수] 만 14세 이상입니다.",
-    description: null,
-    parentId: null,
-  },
-  {
-    id: "service",
-    label: "[필수] 쿠팡 이용약관 동의",
-    description: null,
-    parentId: null,
-  },
-  {
-    id: "commerce",
-    label: "[필수] 전자금융거래 이용약관 동의",
-    description: null,
-    parentId: null,
-  },
-  {
-    id: "privacy",
-    label: "[필수] 개인정보 수집 및 이용 동의",
-    description: null,
-    parentId: null,
-  },
-  {
-    id: "collect",
-    label: "[선택] 광고성 목적의 개인정보 수집 및 이용 동의",
-    description: null,
-    parentId: null,
-  },
-  {
-    id: "ads",
-    label: "[선택] 광고성 정보 전송에 동의",
-    description: null,
-    parentId: "collect",
-  },
-  {
-    id: "email",
-    label: "[선택] 이메일 수신에 동의",
-    description: null,
-    parentId: "ads",
-  },
-  {
-    id: "sms",
-    label: "[선택] SMS,MMS 수신에 동의",
-    description: null,
-    parentId: "ads",
-  },
-  {
-    id: "push",
-    label: "[선택] 푸시 수신에 동의",
-    description: null,
-    parentId: "ads",
-  },
-];
 
 export default function SignupPage() {
   const router = useRouter();
-
-  const ALL_REQUIRED_CONSENTS: TRequiredConsent[] = [
-    "fourteen",
-    "service",
-    "privacy",
-  ];
-  const ALL_OPTIONAL_CONSENTS: TOptionalConsent[] = [
-    "email",
-    "sms",
-    "marketing",
-  ];
   const {
     register,
     handleSubmit,
@@ -113,57 +55,21 @@ export default function SignupPage() {
   } = useForm<IFormData>({ mode: "onBlur" });
 
   const onValid = (data: any) => {
-    if (
-      data.requiredConsents &&
-      data.requiredConsents.length !== ALL_REQUIRED_CONSENTS.length
-    ) {
-      setError("requiredConsents", { message: "약관에 동의해주세요." });
-      return;
-    }
-
     alert(`${data.email} 님 가입을 환영합니다.`);
     router.push("/");
   };
 
   const onInvalid = (errors: any) => {
-    if (
-      !errors.requiredConsents &&
-      watch("requiredConsents").length !== ALL_REQUIRED_CONSENTS.length
-    ) {
-      setError("requiredConsents", { message: "약관에 동의해주세요." });
-    }
-  };
+    console.log(errors);
+    const errorAgreement = Object.keys(errors);
+    const missingAgreement = agreementList
+      .filter((agreement) => agreement.required)
+      .map((agreement) => agreement.id)
+      .filter((agreement) => errorAgreement.includes(agreement));
 
-  const handleAllCheck = (checked: boolean) => {
-    setValue("requiredConsents", checked ? ALL_REQUIRED_CONSENTS : []);
-    setValue("optionalConsents", checked ? ALL_OPTIONAL_CONSENTS : []);
-    setValue("ads", checked ? "ads" : false);
-    clearErrors("requiredConsents");
-  };
-
-  const handleCheckBoxChange = () => {
-    setValue("all", isAllChecked() ? "all" : false);
-    function isAllChecked() {
-      const requierdConsent = watch("requiredConsents");
-      const optionalConsent = watch("optionalConsents");
-      return (
-        requierdConsent.length === ALL_REQUIRED_CONSENTS.length &&
-        optionalConsent.length === ALL_OPTIONAL_CONSENTS.length
-      );
-    }
-  };
-
-  const handleOptionalCheck = (checked: boolean) => {
-    setValue("optionalConsents", checked ? ["email", "sms", "marketing"] : []);
-  };
-
-  const handleOptionalChange = () => {
-    setValue("ads", isAllOptionalUnChecked() ? false : "ads");
-
-    function isAllOptionalUnChecked() {
-      const optionalConsent = watch("optionalConsents");
-      return optionalConsent ? optionalConsent?.length === 0 : true;
-    }
+    missingAgreement.length > 0
+      ? setError("requiredAgreement", { message: "약관에 동의해주세요." })
+      : clearErrors("requiredAgreement");
   };
 
   return (
@@ -235,80 +141,33 @@ export default function SignupPage() {
 
         <SubTitle>쿠팡 서비스약관에 동의해주세요</SubTitle>
 
-        <CheckBox
-          register={register("all")}
-          label="모두 동의합니다."
-          description="동의에는 필수 및 선택 목적(광고성 정보 수신 포함)에 대한 동의가 포함되어 있으며, 선택 목적의 동의를 거부하시는 경우에도 서비스 이용이 가능합니다."
-          value="all"
-          bold
-          onChange={handleAllCheck}
-          errMessage={
-            errors.requiredConsents && String(errors.requiredConsents?.message)
-          }
-        />
-        <CheckBox.Group border>
-          <CheckBox
-            register={register("requiredConsents", {
-              required: "약관에 동의해주세요.",
-            })}
-            value="fourteen"
-            label="[필수] 만 14세 이상입니다."
-            onChange={handleCheckBoxChange}
+        <CheckBox.Group>
+          <CheckBox.AllCheckItem
+            setValue={setValue}
+            label="모두 동의합니다."
+            description="동의에는 필수 및 선택 목적(광고성 정보 수신 포함)에 대한 동의가 포함되어 있으며, 선택 목적의 동의를 거부하시는 경우에도 서비스 이용이 가능합니다."
+            errMessage={
+              errors.requiredAgreement &&
+              String(errors.requiredAgreement?.message)
+            }
           />
-          <CheckBox
-            register={register("requiredConsents", {
-              required: "약관에 동의해주세요.",
-            })}
-            value="service"
-            label="[필수] 쿠팡 이용약관 동의"
-            onChange={handleCheckBoxChange}
-          />
-          <CheckBox
-            register={register("requiredConsents", {
-              required: "약관에 동의해주세요.",
-            })}
-            value="privacy"
-            label="[필수] 개인정보 취급방침 동의"
-            onChange={handleCheckBoxChange}
-          />
-          <CheckBox
-            register={register("ads")}
-            value="ads"
-            label="[선택] 광고성 정보 수신동의"
-            onChange={(isChecked: boolean) => {
-              handleOptionalCheck(isChecked);
-              handleCheckBoxChange();
-            }}
-          />
-          <CheckBox.Group>
-            <CheckBox
-              register={register("optionalConsents")}
-              value="email"
-              label="[선택] 이메일 수신동의"
-              onChange={() => {
-                handleOptionalChange();
-                handleCheckBoxChange();
-              }}
-            />
-            <CheckBox
-              register={register("optionalConsents")}
-              value="sms"
-              label="[선택] SMS 수신동의"
-              onChange={() => {
-                handleOptionalChange();
-                handleCheckBoxChange();
-              }}
-            />
-            <CheckBox
-              register={register("optionalConsents")}
-              value="marketing"
-              label="[선택] 앱 푸시 수신 동의"
-              onChange={() => {
-                handleOptionalChange();
-                handleCheckBoxChange();
-              }}
-            />
-          </CheckBox.Group>
+          <GroupWrapper>
+            {agreementList.map((agreement) => (
+              <CheckBox
+                key={agreement.id}
+                value={agreement.id}
+                label={agreement.label}
+                description={agreement.description}
+                parentId={agreement.parentId}
+                register={register(agreement.id, {
+                  required: agreement.required ? true : undefined,
+                })}
+                indentLevel={
+                  ["adEmail", "adSms", "adPush"].includes(agreement.id) ? 1 : 0
+                }
+              />
+            ))}
+          </GroupWrapper>
         </CheckBox.Group>
         <Button theme="default" type="submit">
           동의하고 가입하기

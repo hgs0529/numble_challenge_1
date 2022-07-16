@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Button from "../../src/components/button/Button";
-import CheckBox from "../../src/components/checkBox/CheckBox";
+import CheckBox from "../../src/components/checkBox";
 import Input from "../../src/components/input/Input";
 import { InputWrapper, Separate, Wrapper } from "../../styles/styles";
 
@@ -67,7 +67,7 @@ export default function LoginPage() {
           />
         </InputWrapper>
         <FindAccountWrapper>
-          <CheckBox label="자동로그인" value="autoLogin" />
+          <CheckBox label="자동로그인" value="ads" />
           <FindAccount>
             아이디/비밀번호 찾기 <FontAwesomeIcon icon={faAngleRight} />
           </FindAccount>
