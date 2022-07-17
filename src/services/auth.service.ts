@@ -1,5 +1,6 @@
-import axios from "axios";
-import cookies from "js-cookie";
+import { ILoginData, ISignupData } from "../types/auth";
+import ApiClient from "./ApiClient";
+import TokenProvider from "./TokenProvider";
 
 type SignupAgreements = {
   /** 만 14세 이상입니다 */
@@ -22,54 +23,44 @@ type SignupAgreements = {
   agree_to_receive_push: boolean;
 };
 
-class AuthService {
+class AuthService extends ApiClient {
   /** refreshToken을 이용해 새로운 토큰을 발급받습니다. */
   async refresh() {
-    const refreshToken = cookies.get("refreshToken");
-    if (!refreshToken) {
-      return;
-    }
+    if (!TokenProvider.exist("refreshToken")) return;
 
-    const { data } = await axios.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/refresh",
-      null,
-      {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      }
-    );
-
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+    const { data } = await super.post("/auth/refresh", null, {
+      headers: {
+        Authorization: `Bearer ${TokenProvider.getToken("refreshToken")}`,
+      },
+    });
+    TokenProvider.setToken("accessToken", data.access, 1);
+    TokenProvider.setToken("refreshToken", data.refresh, 7);
   }
 
   /** 새로운 계정을 생성하고 토큰을 발급받습니다. */
-  async signup(
-    email: string,
-    password: string,
-    name: string,
-    phoneNumber: string,
-    agreements: SignupAgreements
-  ) {
-    const { data } = await axios.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/signup",
-      { email, password, name, phoneNumber, agreements }
-    );
-
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+  async signup(signupData: ISignupData) {
+    const { data } = await super.post("/auth/signup", signupData);
+    TokenProvider.setToken("accessToken", data.access, 1);
+    TokenProvider.setToken("refreshToken", data.refresh, 7);
   }
 
   /** 이미 생성된 계정의 토큰을 발급받습니다. */
-  async login(email: string, password: string) {
-    const { data } = await axios.post(
-      process.env.NEXT_PUBLIC_API_HOST + "/auth/login",
-      { email, password }
-    );
+  async login(loginData: ILoginData) {
+    const { data } = await super.post("/auth/login", loginData);
+    TokenProvider.setToken("accessToken", data.access, 1);
+    TokenProvider.setToken("refreshToken", data.refresh, 7);
+  }
 
-    cookies.set("accessToken", data.access, { expires: 1 });
-    cookies.set("refreshToken", data.refresh, { expires: 7 });
+  // 아직 요청 url 을 모름
+  async logout() {
+    const { data } = await super.post("logoutUrl", null);
+    TokenProvider.clear();
+  }
+
+  // 아직 요청 url 을 모름
+  async signout() {
+    const { data } = await super.delete("deleteUrl/14");
+    TokenProvider.clear();
   }
 }
 
