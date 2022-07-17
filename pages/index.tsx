@@ -1,38 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import useLogin from "../src/hooks/auth/useLogin";
-import useMe from "../src/hooks/user/useMe";
-import useSignup from "../src/hooks/auth/useSignup";
-import useUser from "../src/hooks/user/useUser";
+import Button from "../src/components/button/Button";
 
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const { data: me } = useMe();
-  const { data: userData } = useUser(14);
-  const { mutate: signup, isLoading: sginupLoading } = useSignup();
-  const { mutate: login, isLoading: loginLoding } = useLogin();
-
-  console.log("내 정보입니다", me);
-  console.log("14번 유저입니다.", userData);
-
-  const handleSginup = () => {
-    if (sginupLoading) return;
-    signup({
-      email: "hgs_0529@naver.com",
-      password: "123",
-      name: "황길성",
-      phoneNumber: "010-0000-0000",
-      agreements: { privacy: true, ad: false },
-    });
-  };
-
-  const handleLogin = () => {
-    if (loginLoding) return;
-    login({ email: "hgs_0529@naver.com", password: "123" });
-  };
-
   return (
     <div className={styles.container}>
       <Head>
@@ -42,19 +15,12 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Hello World!</h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>src/services</code>,
-          <code className={styles.code}>src/hooks</code>
-        </p>
-        <button type="button" onClick={handleSginup}>
-          회원가입
-        </button>
-        <button type="button" onClick={handleLogin}>
-          로그인
-        </button>
+        <Button theme="default" to="/auth/login" type="button">
+          로그인하러가기
+        </Button>
+        <Button theme="reverse" to="/auth/signup" type="button">
+          회원가입하러가기
+        </Button>
       </main>
 
       <footer className={styles.footer}>
