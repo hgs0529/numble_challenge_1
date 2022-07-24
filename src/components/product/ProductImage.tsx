@@ -156,6 +156,7 @@ const ZoomWindow = styled.div<{
   position: string;
   active: boolean;
 }>`
+  z-index: 1;
   position: absolute;
   left: 100%;
   top: 0;

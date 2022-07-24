@@ -8,8 +8,33 @@ export type TImage = {
   thumbnailImage: string;
 };
 
+export type TDelivery = {
+  badgeUrl: string;
+  descriptions: string;
+  countDown: string | null;
+};
+
+export type TPrice = {
+  originPrice: string;
+  salePrice: string;
+  discountRate: string;
+};
+
+export type TRating = {
+  count: number;
+  average: number;
+};
+
 export interface ProductInfo {
+  id: number;
+  name: string;
+  sellingInfo: string[];
+  delivery: TDelivery[];
   images: TImage[];
+  price: TPrice;
+  rating: TRating;
+  coupickIcon: string;
+  brandName: string;
 }
 
 export default async function handler(
@@ -26,16 +51,21 @@ export default async function handler(
       return res.data;
     });
 
-  console.log(data);
-
-  res.json({
+  const result: ProductInfo = {
     id: data.itemId,
     name: data.itemName,
     images: data.images,
     sellingInfo: data.sellingInfoVo.sellingInfo,
-    deliveryBadge: data.quantityBase[0].delivery.badgeUrl,
-    originPrice: data.quantityBase[0].price.originPrice,
-    salePrice: data.quantityBase[0].price.salePrice,
+    delivery: data.quantityBase[0].deliveryList.map((delivery: any) => ({
+      badgeUrl: delivery.badgeUrl,
+      descriptions: delivery.descriptions,
+      countDown: delivery.countDownMessage,
+    })),
+    price: {
+      originPrice: data.quantityBase[0].price.originPrice,
+      salePrice: data.quantityBase[0].price.salePrice,
+      discountRate: data.quantityBase[0].price.discountRate,
+    },
     rating: {
       count: data.ratingCount,
       average: data.ratingAverage,
@@ -43,5 +73,7 @@ export default async function handler(
     coupickIcon:
       "//image8.coupangcdn.com/image/badges/cou_pick/web/coupick@2x.png",
     brandName: "Apple",
-  });
+  };
+
+  res.json(result);
 }
