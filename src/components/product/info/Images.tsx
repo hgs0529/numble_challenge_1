@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { TImage } from "../../../pages/api/products/[productId]/vendoritems/[vendoritemId]";
+import { TImage } from "../../../../pages/api/products/[productId]/vendoritems/[vendoritemId]";
 
 interface Props {
-  images: TImage[];
+  images?: TImage[];
 }
 
-const ProductImage = ({ images }: Props) => {
+const Images = ({ images }: Props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [positionTop, setPositionTop] = useState(0);
   const [positionLeft, setPositionLeft] = useState(0);
@@ -24,10 +24,8 @@ const ProductImage = ({ images }: Props) => {
       const { left, top } = e.currentTarget.getBoundingClientRect();
       const { x: lensLeft, y: lensTop } =
         zoomLensRef.current.getBoundingClientRect();
-
       setLensActive(true);
 
-      // 수정 필요
       const { xCoord, yCoord } = getCoords(
         clientX - left - LENS_WIDTH / 2,
         clientY - top - LENS_HEIGHT / 2
@@ -43,7 +41,6 @@ const ProductImage = ({ images }: Props) => {
   const handleMouseLeave = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    console.log("leave");
     setLensActive(false);
   };
 
@@ -103,50 +100,50 @@ const ProductImage = ({ images }: Props) => {
     return { xCoord, yCoord };
   };
 
-  console.log(windowPosition);
-
   return (
     <ImageContainer>
-      <ImageList>
-        {images?.map((image, index) => (
-          <ImageItem
-            onMouseOver={() => setSelectedImageIndex(index)}
-            active={index === selectedImageIndex}
-            key={index}
+      {images && (
+        <>
+          <ImageList>
+            {images?.map((image, index) => (
+              <ImageItem
+                onMouseOver={() => setSelectedImageIndex(index)}
+                active={index === selectedImageIndex}
+                key={index}
+              >
+                <Image
+                  alt="쿠팡"
+                  src={`http:${image.thumbnailImage}`}
+                  width={50}
+                  height={50}
+                />
+              </ImageItem>
+            ))}
+          </ImageList>
+          <ZoomContainer
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
           >
             <Image
               alt="쿠팡"
-              src={`http:${image.thumbnailImage}`}
-              width={50}
-              height={50}
+              src={`http:${images[selectedImageIndex].detailImage}`}
+              width={410}
+              height={410}
             />
-          </ImageItem>
-        ))}
-      </ImageList>
-      <ZoomContainer
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        {images && (
-          <Image
-            alt="쿠팡"
-            src={`http:${images[selectedImageIndex].detailImage}`}
-            width={410}
-            height={410}
-          />
-        )}
-        <ZoomLens
-          ref={zoomLensRef}
-          top={positionTop}
-          left={positionLeft}
-          active={lensActive}
-        />
-        <ZoomWindow
-          source={`http:${images[selectedImageIndex].detailImage}`}
-          position={windowPosition}
-          active={lensActive}
-        />
-      </ZoomContainer>
+            <ZoomLens
+              ref={zoomLensRef}
+              top={positionTop}
+              left={positionLeft}
+              active={lensActive}
+            />
+            <ZoomWindow
+              source={`http:${images[selectedImageIndex].detailImage}`}
+              position={windowPosition}
+              active={lensActive}
+            />
+          </ZoomContainer>
+        </>
+      )}
     </ImageContainer>
   );
 };
@@ -177,6 +174,7 @@ const ImageList = styled.div`
   flex-direction: column;
   justify-content: center;
   margin-right: 10px;
+  max-height: 475px;
 `;
 
 const ImageItem = styled.div<{ active?: boolean }>`
@@ -193,6 +191,7 @@ const ImageItem = styled.div<{ active?: boolean }>`
 const ZoomContainer = styled.div`
   width: 100%;
   position: relative;
+  max-height: 410px;
 `;
 
 const ZoomLens = styled.div<{ active?: boolean; left: number; top: number }>`
@@ -206,4 +205,4 @@ const ZoomLens = styled.div<{ active?: boolean; left: number; top: number }>`
   display: ${(props) => (props.active ? "block" : "none")};
 `;
 
-export default ProductImage;
+export default Images;

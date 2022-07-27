@@ -4,7 +4,7 @@ import React from "react";
 import { BreadcrumbItem } from "../../../../pages/api/products/[productId]/breadcrumb";
 
 interface IBreadcrumbProps {
-  data: BreadcrumbItem[];
+  data?: BreadcrumbItem[];
 }
 
 const Breadcrumb = ({ data }: IBreadcrumbProps) => {

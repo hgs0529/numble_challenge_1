@@ -13,6 +13,12 @@ class ProductService extends RequestService {
     ).then((res) => res.data);
   }
 
+  async getBrandItems(productId: string, vendoritemId: string, itemId: string) {
+    return await this.getRequest(
+      `/api/products/${productId}/brand-items?itemId=${itemId}&vendoritemId=${vendoritemId}`
+    ).then((res) => res.data);
+  }
+
   // async getOtherProducts(
   //   productId: number,
   //   vendoritemId: number,

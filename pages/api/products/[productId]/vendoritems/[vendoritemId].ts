@@ -9,6 +9,7 @@ export type TImage = {
 };
 
 export type TDelivery = {
+  id: number;
   badgeUrl: string;
   descriptions: string;
   countDown: string | null;
@@ -18,11 +19,29 @@ export type TPrice = {
   originPrice: string;
   salePrice: string;
   discountRate: string;
+  priceUnit: string;
 };
 
 export type TRating = {
   count: number;
   average: number;
+};
+
+export type TCcid = {
+  ccidText: string;
+  iconUrl: string;
+};
+
+export type TCashBack = {
+  finalCashBackAmt: number;
+  iconUrl: string;
+};
+
+export type TInsurance = {
+  iconUrl: string;
+  name: string;
+  price: string;
+  description: string;
 };
 
 export interface ProductInfo {
@@ -35,6 +54,9 @@ export interface ProductInfo {
   rating: TRating;
   coupickIcon: string;
   brandName: string;
+  ccid: TCcid;
+  cashBack: TCashBack;
+  insurance: TInsurance;
 }
 
 export default async function handler(
@@ -56,15 +78,19 @@ export default async function handler(
     name: data.itemName,
     images: data.images,
     sellingInfo: data.sellingInfoVo.sellingInfo,
-    delivery: data.quantityBase[0].deliveryList.map((delivery: any) => ({
-      badgeUrl: delivery.badgeUrl,
-      descriptions: delivery.descriptions,
-      countDown: delivery.countDownMessage,
-    })),
+    delivery: data.quantityBase[0].deliveryList.map(
+      (delivery: any, i: number) => ({
+        id: i,
+        badgeUrl: delivery.badgeUrl,
+        descriptions: delivery.descriptions.replace(/<[^>]+>/g, ""),
+        countDown: delivery.countDownMessage,
+      })
+    ),
     price: {
       originPrice: data.quantityBase[0].price.originPrice,
       salePrice: data.quantityBase[0].price.salePrice,
       discountRate: data.quantityBase[0].price.discountRate,
+      priceUnit: data.quantityBase[0].priceUnit,
     },
     rating: {
       count: data.ratingCount,
@@ -73,6 +99,21 @@ export default async function handler(
     coupickIcon:
       "//image8.coupangcdn.com/image/badges/cou_pick/web/coupick@2x.png",
     brandName: "Apple",
+    ccid: {
+      ccidText: data.ccidInfo.simpleInfo.ccidText,
+      iconUrl: data.ccidInfo.simpleInfo.iconUrl,
+    },
+    cashBack: {
+      finalCashBackAmt: data.cashBackSummary.finalCashBackAmt,
+      iconUrl: data.cashBackSummary.cashIconUrl,
+    },
+    insurance: {
+      iconUrl: data.quantityBase[0].bundleOption.options[0].icon,
+      name: data.quantityBase[0].bundleOption.options[0].items[0].name,
+      price: data.quantityBase[0].bundleOption.options[0].items[0].price,
+      description:
+        data.quantityBase[0].bundleOption.options[0].items[0].description,
+    },
   };
 
   res.json(result);

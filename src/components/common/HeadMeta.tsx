@@ -1,5 +1,4 @@
 import Head from "next/head";
-import React from "react";
 
 interface HeadMetaProps {
   title?: string;
@@ -16,7 +15,7 @@ const HeadMeta = ({
 }: HeadMetaProps) => {
   return (
     <Head>
-      <title>쿠팡{` | ${title}`}</title>
+      <title>{`쿠팡${title && " | " + title}`}</title>
       <meta property="og:title" content={title} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={url} />
