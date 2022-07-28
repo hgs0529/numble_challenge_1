@@ -7,7 +7,7 @@ class ProductService extends RequestService {
     );
   }
 
-  async getProduct(productId: string, vendoritemId: string) {
+  async getInfo(productId: string, vendoritemId: string) {
     return await this.getRequest(
       `/api/products/${productId}/vendoritems/${vendoritemId}`
     ).then((res) => res.data);
@@ -16,6 +16,12 @@ class ProductService extends RequestService {
   async getBrandItems(productId: string, vendoritemId: string, itemId: string) {
     return await this.getRequest(
       `/api/products/${productId}/brand-items?itemId=${itemId}&vendoritemId=${vendoritemId}`
+    ).then((res) => res.data);
+  }
+
+  async getDetail(productId: string, vendoritemId: string, itemId: string) {
+    return await this.getRequest(
+      `/api/products/${productId}/items/${itemId}/vendoritems/${vendoritemId}`
     ).then((res) => res.data);
   }
 

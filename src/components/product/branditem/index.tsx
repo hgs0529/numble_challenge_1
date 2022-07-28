@@ -1,12 +1,8 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
-import React from "react";
-import { BrandItems } from "../../../../pages/api/products/[productId]/brand-items";
-import { useRequest } from "../../../hooks";
-import { ProductService } from "../../../services";
+import useBrandItems from "../../../hooks/useBrandItems";
 import Button from "../../common/button";
 import Item from "./Item";
-import Items from "./Item";
 
 interface Props {
   productId: string;
@@ -15,15 +11,8 @@ interface Props {
 }
 
 const BrandItem = ({ productId, vendoritemId, itemId }: Props) => {
-  const { data } = useRequest<BrandItems>(
-    "getBrandItems",
-    () => ProductService.getBrandItems(productId, vendoritemId, itemId),
-    {
-      enabled: productId !== undefined,
-    }
-  );
+  const { data } = useBrandItems(productId, vendoritemId, itemId);
 
-  console.log(data);
   return (
     <div>
       <h4>{data?.brandName}의 다른 상품들</h4>

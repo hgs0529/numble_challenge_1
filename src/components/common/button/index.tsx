@@ -2,7 +2,13 @@
 import { css } from "@emotion/react";
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
-type TShape = "default" | "circle" | "rounded" | "icon" | "reverse";
+type TShape =
+  | "default"
+  | "circle"
+  | "rounded"
+  | "icon"
+  | "reverse"
+  | "transparent";
 type TType = "button" | "submit" | "reset";
 type TColor = "default" | "primary";
 type TSize = "small" | "default" | "large" | "extraSmall";
@@ -15,6 +21,7 @@ interface Props<T extends ElementType = "button"> {
   color?: TColor;
   size?: TSize;
   bold?: boolean;
+  width?: number;
 }
 
 const Button = <T extends ElementType = "button">({
@@ -25,6 +32,7 @@ const Button = <T extends ElementType = "button">({
   color = "default",
   size = "default",
   bold,
+  width,
   ...props
 }: Props<T> & ComponentPropsWithoutRef<T>) => {
   const Component = as || "button";
@@ -36,6 +44,7 @@ const Button = <T extends ElementType = "button">({
     justify-content: center;
     align-items: center;
     border: 1px solid rgba(0, 0, 0, 0.3);
+    width: ${width ? width + "px" : "100%"};
     ${bold && "font-weight: bold;"}
     ${getShape(shape)}
     ${getSize(size)}
@@ -67,10 +76,13 @@ const getShape = (shape: TShape) => {
         width: 14px !important;
         height: 14px !important;
       `;
-    default:
+    case "transparent":
       return css`
-        width: 100%;
+        background-color: transparent;
+        border: none;
       `;
+    default:
+      return;
   }
 };
 
@@ -107,6 +119,12 @@ const getColor = (color: TColor, shape: TShape) => {
             background-color: #fff;
             color: #346aff;
             border: 1px solid #346aff;
+          `
+        : shape === "transparent"
+        ? css`
+            background-color: transparent;
+            color: #346aff;
+            border: none;
           `
         : css`
             background-color: #346aff;

@@ -7,14 +7,15 @@ interface Props {
 
 interface TabsContextProps {
   setActiveTab: (tabName: string) => void;
+  activeTab: string;
 }
 
-const tabsContext = createContext<TabsContextProps | null>(null);
+export const tabsContext = createContext<TabsContextProps | null>(null);
 
 const Tabs = ({ children, defaultTab = "" }: Props) => {
   const [activeTab, setActiveTab] = useState(defaultTab);
   return (
-    <tabsContext.Provider value={{ setActiveTab }}>
+    <tabsContext.Provider value={{ setActiveTab, activeTab }}>
       {children}
     </tabsContext.Provider>
   );

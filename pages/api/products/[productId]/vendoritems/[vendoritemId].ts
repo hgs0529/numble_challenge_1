@@ -57,6 +57,7 @@ export interface ProductInfo {
   ccid: TCcid;
   cashBack: TCashBack;
   insurance: TInsurance;
+  buyableQuantity: number;
 }
 
 export default async function handler(
@@ -77,6 +78,7 @@ export default async function handler(
     id: data.itemId,
     name: data.itemName,
     images: data.images,
+    buyableQuantity: data.buyableQuantity,
     sellingInfo: data.sellingInfoVo.sellingInfo,
     delivery: data.quantityBase[0].deliveryList.map(
       (delivery: any, i: number) => ({

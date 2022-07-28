@@ -4,6 +4,7 @@ import ProductInfo from "../../src/components/product/info";
 import BrandItem from "../../src/components/product/branditem";
 import HeadMeta from "../../src/components/common/HeadMeta";
 import ProductDetail from "../../src/components/product/detail";
+import useProduct from "../../src/hooks/useProduct";
 
 export default function VendoritemPage() {
   const router = useRouter();
@@ -14,9 +15,17 @@ export default function VendoritemPage() {
     router.query.productId
   );
 
+  const { data } = useProduct(
+    router.query.productId?.toString()!,
+    router.query.vendoritemId?.toString()!
+  );
+
   return (
     <Wrapper>
-      <HeadMeta title="상품페이지" />
+      <HeadMeta
+        title={data?.name.split(",")[0]}
+        image={data?.images[0].thumbnailImage}
+      />
       <ProductInfo
         vendoritemId={router.query.vendoritemId?.toString()!}
         productId={router.query.productId?.toString()!}
@@ -26,7 +35,11 @@ export default function VendoritemPage() {
         productId={router.query.productId?.toString()!}
         itemId={router.query.itemId?.toString()!}
       />
-      <ProductDetail />
+      <ProductDetail
+        vendoritemId={router.query.vendoritemId?.toString()!}
+        productId={router.query.productId?.toString()!}
+        itemId={router.query.itemId?.toString()!}
+      />
     </Wrapper>
   );
 }

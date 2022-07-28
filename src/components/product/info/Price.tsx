@@ -37,7 +37,7 @@ const Price = ({ price, badge, ccid, cashBack }: Props) => {
       </SalePrice>
       <FlexBox>
         {ccid && (
-          <Button shape="rounded" color="default" size="extraSmall">
+          <Button width={150} shape="rounded" color="default" size="extraSmall">
             <Image
               src={`http:${ccid.iconUrl}`}
               alt="ccid-icon"
@@ -48,7 +48,7 @@ const Price = ({ price, badge, ccid, cashBack }: Props) => {
           </Button>
         )}
         {cashBack && (
-          <Button shape="rounded" color="default" size="extraSmall">
+          <Button width={150} shape="rounded" color="default" size="extraSmall">
             <Image
               src={`http:${cashBack.iconUrl}`}
               alt="ccid-icon"

@@ -13,7 +13,6 @@ interface Props {
 }
 
 const Insurance = ({ insurance, register }: Props) => {
-  console.log(register);
   return (
     <InsuranceWrapper>
       <CheckBox description={insurance?.description} register={register}>

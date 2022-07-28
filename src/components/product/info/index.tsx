@@ -1,12 +1,4 @@
 import styled from "@emotion/styled";
-import Image from "next/image";
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { BreadcrumbItem } from "../../../../pages/api/products/[productId]/breadcrumb";
-import { ProductInfo } from "../../../../pages/api/products/[productId]/vendoritems/[vendoritemId]";
-import { useRequest } from "../../../hooks";
-import { ProductService } from "../../../services";
 import Breadcrumb from "../../common/breadcrumb";
 import Images from "./Images";
 import Header from "./Header";
@@ -15,6 +7,9 @@ import Delivery from "./Delivery";
 import Insurance from "./Insurance";
 import Button from "../../common/button";
 import { useForm } from "react-hook-form";
+import useBreadcrumbs from "../../../hooks/useBreadcrumbs";
+import useProduct from "../../../hooks/useProduct";
+import NumberInput from "../../common/numberInput";
 
 interface Props {
   productId: string;
@@ -22,20 +17,10 @@ interface Props {
 }
 
 const ProductInfo = ({ productId, vendoritemId }: Props) => {
-  const { data } = useRequest<BreadcrumbItem[]>(
-    "breadcrumbs",
-    () => ProductService.getBreadcrumbs(productId),
-    {
-      enabled: productId !== undefined,
-    }
-  );
-
-  const { data: product, isLoading: productLoading } = useRequest<ProductInfo>(
-    "product",
-    () => ProductService.getProduct(productId, vendoritemId),
-    {
-      enabled: productId !== undefined && vendoritemId !== undefined,
-    }
+  const { data } = useBreadcrumbs(productId);
+  const { data: product, isLoading: productLoading } = useProduct(
+    productId,
+    vendoritemId
   );
 
   const { register, handleSubmit } = useForm();
@@ -71,7 +56,15 @@ const ProductInfo = ({ productId, vendoritemId }: Props) => {
             register={register("insurance")}
           />
           <ButtonWrapper>
-            <Button type="submit">장바구니 담기</Button>
+            <NumberInput
+              defaultValue={1}
+              max={product?.buyableQuantity}
+              register={register("quantity")}
+              min={1}
+            />
+            <Button color="primary" shape="reverse" type="submit">
+              장바구니 담기
+            </Button>
             <Button type="submit" color="primary">
               {"바로구매 >"}
             </Button>

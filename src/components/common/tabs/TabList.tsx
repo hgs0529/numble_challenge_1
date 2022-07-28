@@ -3,10 +3,9 @@ import React from "react";
 
 interface Props {
   children: React.ReactNode;
-  name?: string;
 }
 
-const TabList = ({ children, name }: Props) => {
+const TabList = ({ children }: Props) => {
   return <Wrapper>{children}</Wrapper>;
 };
 
@@ -15,6 +14,7 @@ const Wrapper = styled.ul`
   display: flex;
   width: 100%;
   position: sticky;
+  z-index: 5;
   top: 0;
   border-top: 2px solid #555;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
