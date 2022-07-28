@@ -9,12 +9,6 @@ import useProduct from "../../src/hooks/useProduct";
 export default function VendoritemPage() {
   const router = useRouter();
 
-  console.log(
-    router.query.itemId,
-    router.query.vendoritemId,
-    router.query.productId
-  );
-
   const { data } = useProduct(
     router.query.productId?.toString()!,
     router.query.vendoritemId?.toString()!
@@ -24,7 +18,7 @@ export default function VendoritemPage() {
     <Wrapper>
       <HeadMeta
         title={data?.name.split(",")[0]}
-        image={data?.images[0].thumbnailImage}
+        image={`http:${data?.images[0].thumbnailImage}`}
       />
       <ProductInfo
         vendoritemId={router.query.vendoritemId?.toString()!}
