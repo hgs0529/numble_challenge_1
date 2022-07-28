@@ -18,7 +18,8 @@ export default function VendoritemPage() {
     <Wrapper>
       <HeadMeta
         title={data?.name.split(",")[0]}
-        image={`http:${data?.images[0].thumbnailImage}`}
+        image={`http:${data?.images[0].origin}`}
+        url={`https://stage3--neon-malabi-f815de.netlify.app/products/1?vendoritemId=1&itemId=1`}
       />
       <ProductInfo
         vendoritemId={router.query.vendoritemId?.toString()!}
