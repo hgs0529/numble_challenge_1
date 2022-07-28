@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 export default function LoginPage() {
@@ -15,7 +16,9 @@ export default function LoginPage() {
         <input {...register("email")} />
         <input {...register("password")} />
         <button type="submit">로그인</button>
-        <a href="/auth/signup">회원가입</a>
+        <Link href="/auth/signup">
+          <a>회원가입</a>
+        </Link>
       </form>
     </Wrapper>
   );
