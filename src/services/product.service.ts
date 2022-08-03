@@ -24,26 +24,6 @@ class ProductService extends RequestService {
       `/api/products/${productId}/items/${itemId}/vendoritems/${vendoritemId}`
     ).then((res) => res.data);
   }
-
-  // async getOtherProducts(
-  //   productId: number,
-  //   vendoritemId: number,
-  //   itemId: number
-  // ) {
-  //   return await this.getRequest(
-  //     `/products/${productId}/brand-sdp/widget/brand-sdp?itemId=${itemId}&vendoritemId=${vendoritemId}`
-  //   ).then((res) => res.data);
-  // }
-
-  // async getProductDetail(
-  //   productId: number,
-  //   vendoritemId: number,
-  //   itemId: number
-  // ) {
-  //   return await this.getRequest(
-  //     `/products/${productId}/items/${itemId}/vendoritems/${vendoritemId}`
-  //   ).then((res) => res.data);
-  // }
 }
 
 export default new ProductService();
